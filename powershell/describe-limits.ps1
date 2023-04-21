@@ -1,0 +1,1 @@
+docker run --rm -it -v $env:userprofile\.aws:/root/.aws  amazon/aws-cli dynamodb describe-limits --endpoint-url http://lappyMcLaptop:8000 --region us-west-2
