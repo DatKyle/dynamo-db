@@ -42,12 +42,8 @@ defmodule Cooking.Recipes do
     |> AWS.DynamoDB.get_item(%{
       "TableName" => @recipe_table,
       "Key" => %{
-        "HomeId" => %{
-          "S" => home_id
-        },
-        "RecipeId" => %{
-          "S" => recipe_id
-        }
+        "HomeId" => %{"S" => home_id},
+        "RecipeId" => %{"S" => recipe_id}
       }
     })
     |> capture_response()
@@ -86,30 +82,14 @@ defmodule Cooking.Recipes do
 
   defp convert_to_aws_stuct(%Recipe{} = recipe) do
     %{
-      "HomeId" => %{
-        "S" => recipe.home_id
-      },
-      "RecipeId" => %{
-        "S" => recipe.id
-      },
-      "RecipeName" => %{
-        "S" => recipe.name
-      },
-      "RecipeSource" => %{
-        "S" => recipe.source
-      },
-      "RecipePrepTime" => %{
-        "S" => recipe.prep_time
-      },
-      "RecipeCookTime" => %{
-        "S" => recipe.cook_time
-      },
-      "RecipeServings" => %{
-        "S" => recipe.servings
-      },
-      "RecipeDesc" => %{
-        "S" => recipe.description
-      }
+      "HomeId" => %{"S" => recipe.home_id},
+      "RecipeId" => %{"S" => recipe.id},
+      "RecipeName" => %{"S" => recipe.name},
+      "RecipeSource" => %{"S" => recipe.source},
+      "RecipePrepTime" => %{"S" => recipe.prep_time},
+      "RecipeCookTime" => %{"S" => recipe.cook_time},
+      "RecipeServings" => %{"S" => recipe.servings},
+      "RecipeDesc" => %{"S" => recipe.description}
     }
   end
 
