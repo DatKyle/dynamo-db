@@ -40,7 +40,7 @@ defmodule Cooking.Recipes do
   def get_recipe(home_id, recipe_id) do
     Cooking.get_client()
     |> AWS.DynamoDB.get_item(%{
-      "TableName" => "Recipes",
+      "TableName" => @recipe_table,
       "Key" => %{
         "HomeId" => %{
           "S" => home_id
@@ -58,7 +58,7 @@ defmodule Cooking.Recipes do
   def list_recipes(home_id) do
     Cooking.get_client()
     |> AWS.DynamoDB.query(%{
-      "TableName" => "Recipes",
+      "TableName" => @recipe_table,
       "KeyConditionExpression" => "HomeId = :id",
       "ExpressionAttributeValues" => %{
         ":id" => %{
