@@ -11,9 +11,11 @@ services:
     working_dir: /home/dynamodblocal
   
   elixir-app:
-    container_name: dynamodb-app
+    container_name: cooking-app
     entrypoint: [ "tail", "-f", "/dev/null" ]
     build: 
-      context: ./dynamodb_test
+      context: ./cooking
+    volumes:
+      - ./cooking:/app
     depends_on:
       - dynamodb-local
