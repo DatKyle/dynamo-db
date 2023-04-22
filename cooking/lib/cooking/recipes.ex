@@ -67,6 +67,37 @@ defmodule Cooking.Recipes do
     |> Enum.map(&Cooking.Recipes.convert_from_aws_stuct(&1))
   end
 
+  def update_recipe(%Recipe{} = recipe) do
+    Cooking.get_client()
+    |> DynamoDB.update_item(%{
+      "TableName" => @recipe_table,
+      "Key" => %{
+        "HomeId" => %{"S" => recipe.home_id},
+        "RecipeId" => %{"S" => recipe.id}
+      },
+      "UpdateExpression" => "
+        SET RecipeName = :RecipeName,
+        RecipeSource = :RecipeSource,
+        RecipePrepTime = :RecipePrepTime,
+        RecipeCookTime = :RecipeCookTime,
+        RecipeServings = :RecipeServings,
+        RecipeDesc = :RecipeDesc
+      ",
+      "ExpressionAttributeValues" => %{
+        ":RecipeName" => %{"S" => recipe.name},
+        ":RecipeSource" => %{"S" => recipe.source},
+        ":RecipePrepTime" => %{"S" => recipe.prep_time},
+        ":RecipeCookTime" => %{"S" => recipe.cook_time},
+        ":RecipeServings" => %{"S" => recipe.servings},
+        ":RecipeDesc" => %{"S" => recipe.description}
+      },
+      "ReturnValues" => "ALL_NEW"
+    })
+    |> capture_response()
+    |> Map.fetch!("Attributes")
+    |> Cooking.Recipes.convert_from_aws_stuct()
+  end
+
   def convert_from_aws_stuct(item) do
     %Recipe{
       home_id: item["HomeId"]["S"],
